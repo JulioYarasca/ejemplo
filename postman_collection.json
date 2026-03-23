@@ -1,0 +1,612 @@
+{
+  "info": {
+    "_postman_id": "883e9c05-d069-46ad-afb0-43085b1d8c6b",
+    "name": "cs2031-2025-2-week01-lab01",
+    "description": "Colección de Postman para probar la API de gestión de usuarios con autenticación por API Key.\n\n**Instrucciones:**\n1. Importa esta colección en Postman\n2. Configura la variable `base_url` como http://localhost:3000\n3. Ejecuta el login para obtener tu API key\n4. Copia el API key y úsalo en el header `x-api-key` para otros requests\n\n**Autenticación:**\n- Usar header: `x-api-key: {API_KEY_AQUI}`\n- O header: `Authorization: Bearer {API_KEY_AQUI}`\n\n**Variable:**\n- base_url: URL de tu API (ej: http://localhost:3000)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "34026023",
+    "_collection_link": "https://alejandroen-team.postman.co/workspace/dbp-2025-2~c8616997-14c2-415d-8397-755504e22f5e/collection/34026023-883e9c05-d069-46ad-afb0-43085b1d8c6b?action=share&source=collection_link&creator=34026023"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"student_test\",\n  \"email\": \"daniel.sandoval.t@utec.edu.pe\",\n  \"password\": \"TestPass123\",\n  \"name\": \"Test Student\",\n  \"age\": 20,\n  \"description\": \"Test student for API testing\",\n  \"career\": \"Computer Science\",\n  \"hobbies\": \"Programming, Gaming\",\n  \"role\": \"student\",\n  \"section\": \"1.02\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Registra un nuevo usuario. Solo emails que existen en la tabla `identifiers` pueden registrarse."
+          },
+          "response": []
+        },
+        {
+          "name": "Register User - Invalid Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"invalid_user\",\n  \"email\": \"invalid@example.com\",\n  \"password\": \"TestPass123\",\n  \"name\": \"Invalid User\",\n  \"role\": \"student\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Intenta registrar con un email que no existe en identifiers - debería fallar."
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"mateo_llallire\",\n  \"password\": \"TestPass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Hacer login para obtener API key. Copia el `apiKey` de la respuesta para usar en otros requests."
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Invalid Credentials",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"invalid_user\",\n  \"password\": \"wrong_password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Intenta hacer login con credenciales inválidas - debería retornar 401."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Session",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "REPLACE_WITH_YOUR_API_KEY",
+                "description": "Reemplaza con tu API key del login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/session",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "session"
+              ]
+            },
+            "description": "Obtiene información de la sesión actual usando API key."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Info (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "REPLACE_WITH_YOUR_API_KEY",
+                "description": "Reemplaza con tu API key del login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Obtiene información detallada del usuario actual incluyendo información del API key."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Cierra sesión (simple respuesta de confirmación)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users Management",
+      "item": [
+        {
+          "name": "Get All Users (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "Obtiene lista de usuarios (acceso público)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Users - With Pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users?page=1&pageSize=5&role=student",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "5"
+                },
+                {
+                  "key": "role",
+                  "value": "student"
+                }
+              ]
+            },
+            "description": "Obtiene usuarios con paginación y filtros."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "1"
+              ]
+            },
+            "description": "Obtiene un usuario específico por ID (acceso público)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User (Authenticated)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "REPLACE_WITH_YOUR_API_KEY",
+                "description": "Reemplaza con tu API key del login"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Test Student\",\n  \"description\": \"Updated description for testing\",\n  \"age\": 21,\n  \"career\": \"Software Engineering\",\n  \"hobbies\": \"Programming, Reading, Gaming\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "1"
+              ]
+            },
+            "description": "Actualiza un usuario (requiere autenticación y permisos apropiados)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Description (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "REPLACE_WITH_YOUR_API_KEY",
+                "description": "Reemplaza con tu API key del login"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Nueva descripción actualizada solo con PATCH\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "1"
+              ]
+            },
+            "description": "Actualiza solo la descripción del usuario."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User (Admin Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "REPLACE_WITH_ADMIN_API_KEY",
+                "description": "Reemplaza con API key de un admin"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "1"
+              ]
+            },
+            "description": "Elimina un usuario (solo admins)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Operations",
+      "item": [
+        {
+          "name": "Create Admin User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin_test\",\n  \"email\": \"admin@utec.edu.pe\",\n  \"password\": \"AdminPass123\",\n  \"name\": \"Test Admin\",\n  \"age\": 30,\n  \"description\": \"Administrator for testing\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Registra un usuario admin (asegúrate de que admin@utec.edu.pe esté en identifiers)."
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin_test\",\n  \"password\": \"AdminPass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Login como admin para obtener API key de admin."
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "REPLACE_WITH_ADMIN_API_KEY",
+                "description": "Reemplaza con API key de admin"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Promoted User\",\n  \"role\": \"teacher\",\n  \"description\": \"Promoted to teacher by admin\",\n  \"section\": \"2.01\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "1"
+              ]
+            },
+            "description": "Admin actualiza cualquier usuario incluyendo cambios de rol."
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "REPLACE_WITH_ADMIN_API_KEY",
+                "description": "Reemplaza con API key de admin"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/users/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "2"
+              ]
+            },
+            "description": "Admin elimina un usuario."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Testing & Examples",
+      "item": [
+        {
+          "name": "Test with Authorization Bearer",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer REPLACE_WITH_YOUR_API_KEY",
+                "description": "Alternativa usando Authorization Bearer en lugar de x-api-key"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Ejemplo usando Authorization: Bearer en lugar de x-api-key."
+          },
+          "response": []
+        },
+        {
+          "name": "Test Unauthenticated Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/auth/session",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "session"
+              ]
+            },
+            "description": "Prueba request sin autenticación - debería retornar 401."
+          },
+          "response": []
+        },
+        {
+          "name": "Test Invalid API Key",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "invalid_api_key_here",
+                "description": "API key inválido para probar manejo de errores"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/session",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "session"
+              ]
+            },
+            "description": "Prueba con API key inválido - debería retornar 401."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "description": "URL base de la API"
+    }
+  ]
+}
