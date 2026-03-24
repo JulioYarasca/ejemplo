@@ -161,17 +161,17 @@ export class UserService {
   ): Promise<Omit<User, "password">> {
     try {
       // Check if email exists in identifiers table first
-      const [identifier] = await db
-        .select()
-        .from(identifiers)
-        .where(eq(identifiers.email, userData.email))
-        .limit(1);
+      //const [identifier] = await db
+      //  .select()
+      //  .from(identifiers)
+      //  .where(eq(identifiers.email, userData.email))
+      //  .limit(1);
 
-      if (!identifier) {
-        throw new Error(
-          "Email not found in identifiers. Registration not allowed for this email.",
-        );
-      }
+      //if (!identifier) {
+      //  throw new Error(
+      //    "Email not found in identifiers. Registration not allowed for this email.",
+      //  );
+      //}
 
       // Check if user already exists
       const existingUserByEmail = await this.getUserByEmail(userData.email);
